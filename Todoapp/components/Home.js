@@ -20,12 +20,15 @@ const Home = () => {
     }]
     const [todos, setTodos] = useState(initialTodos);
     
+    const handleDelete = () =>{
+        setTodos([]);
+    }
+    
     return (
         <>
-            <Header/>
+            <Header handleDelete ={handleDelete} />
             <ListItem todos={todos} setTodos={setTodos}/>
         </>
-        
     )
 }
 
