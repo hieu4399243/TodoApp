@@ -6,25 +6,39 @@ import {Entypo} from "@expo/vector-icons"
 
 const ListItem = ({ todos, setTodos }) => {
   const [swipedRow, setswipedRow] = useState(null);
+  
+  const handleDeleteTodo = (rowMap, rowKey) => {
+    const newTodos = [...todos];
+    console.log(newTodos);
+    const todoIndex = todos.findIndex((todo) => todo.key == rowKey);
+    console.log(todoIndex);
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos);
+  }
+  
   return (
       <SwipeListView
           data={todos}
           renderItem={({ item }) => {
             const RowText = item.key == swipedRow ? SwipedTodoText : TodoText;
             return (
-              <ListView>
+              <ListView
+                underlayColor={colors.primary}
+                onPress={()=>{
+
+                }}
+              >
                 <>
-                  
                   <RowText>{item.title}</RowText>
                   <TodoDate>{item.date}</TodoDate>
                 </>
               </ListView>
             )
           }}
-          renderHiddenItem={() => {
+          renderHiddenItem={(data, rowMap) => {
             return(
               <ListViewHidden>
-                <HiddenButton>
+                <HiddenButton  onPress={() => handleDeleteTodo(rowMap, data.item.key)}>
                     <Entypo name="trash" size={25} colors={colors.secondary} />
                 </HiddenButton>
               </ListViewHidden>
@@ -42,7 +56,7 @@ const ListItem = ({ todos, setTodos }) => {
           onRowOpen={(rowKey)=>{
             setswipedRow(rowKey);
           }}
-          onRowClose={(rowKey) =>{
+          onRowClose={() =>{
             setswipedRow(null);
           }}
       />
